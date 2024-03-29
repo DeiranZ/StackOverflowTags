@@ -15,6 +15,7 @@ builder.Services.AddLogging(config =>
         .AddConsole()
         .AddConfiguration(builder.Configuration)
         .SetMinimumLevel(LogLevel.Information));
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -24,6 +25,8 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "StackOverflowTags API V1");
 });
 
+app.UseHttpsRedirection();
 app.MapGet("/", () => "Hello World!");
+app.MapControllers();
 
 app.Run();

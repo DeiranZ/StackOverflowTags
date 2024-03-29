@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackOverflowTags.Domain.Interfaces;
 using StackOverflowTags.Infrastructure.Persistence;
+using StackOverflowTags.Infrastructure.Repositories;
 
 namespace StackOverflowTags.Infrastructure.Extensions
 {
@@ -9,10 +11,12 @@ namespace StackOverflowTags.Infrastructure.Extensions
     {
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            var connString = configuration.GetConnectionString("ReceptionistContext");
+            var connString = configuration.GetConnectionString("TagsContext");
 
             services.AddDbContext<StackOverflowTagsDbContext>(options =>
                 options.UseMySQL(connString));
+
+            services.AddScoped<ITagRepository, TagRepository>();
         }
     }
 }
