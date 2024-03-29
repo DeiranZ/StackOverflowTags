@@ -1,8 +1,33 @@
 version: '3.4'
 
+volumes:
+  datafiles:
+
 services:
+  database:
+    image: mysql:8.0.22
+    ports:
+      - "3306:3306"
+    volumes:
+      - datafiles:/var/lib/mysql
+      - "~/SqlScripts/setup.sql:/docker-entrypoint-initdb.d/1.sql"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_USER: newuser
+      MYSQL_PASSWORD: newuser
+      MYSQL_DATABASE: StackOverflowTagsDb
+
   stackoverflowtags.api:
     image: ${DOCKER_REGISTRY-}stackoverflowtagsapi
     build:
       context: .
-      dockerfile: StackOverflowTagsAPI\Dockerfile
+      dockerfile: StackOverflowTagsAPI/Dockerfile
+    ports:
+    - "5000:5000"
+    - "5001:5001" 
+    environment:
+    - DBHOST=database
+    depends_on:
+      - database
+    restart: always
