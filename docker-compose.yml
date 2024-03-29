@@ -5,12 +5,12 @@ volumes:
 
 services:
   database:
-    image: mysql:8.0.22
+    image: mysql:8.0.36
     ports:
       - "3306:3306"
     volumes:
       - datafiles:/var/lib/mysql
-      - "~/SqlScripts/setup.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./SqlScripts/setup.sql:/docker-entrypoint-initdb.d/1.sql"
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpass

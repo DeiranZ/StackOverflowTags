@@ -1,4 +1,4 @@
-CREATE TABLE `StackOverflowTagsDb.Tags` (
+CREATE TABLE `Tags` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `count` int DEFAULT NULL,

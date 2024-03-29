@@ -8,5 +8,11 @@ namespace StackOverflowTags.Infrastructure.Persistence
 
         public DbSet<Domain.Entities.Tag> Tags { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Domain.Entities.Tag>();
+        }
+
     }
 }
