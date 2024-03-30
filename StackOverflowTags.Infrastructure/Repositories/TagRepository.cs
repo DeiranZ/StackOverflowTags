@@ -14,6 +14,18 @@ namespace StackOverflowTags.Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
+        public async Task Create(Tag tag)
+        {
+            dbContext.Add(tag);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task Create(IEnumerable<Tag> tags)
+        {
+            dbContext.AddRange(tags);
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<Tag>> GetAll()
         {
             return await dbContext.Tags.ToListAsync();

@@ -1,9 +1,11 @@
 using Microsoft.OpenApi.Models;
+using StackOverflowTags.Application.Extensions;
 using StackOverflowTags.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen( c=>
 {
