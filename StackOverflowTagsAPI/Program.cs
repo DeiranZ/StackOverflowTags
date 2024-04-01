@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Models;
 using StackOverflowTags.Application.Extensions;
+using StackOverflowTags.Domain.Interfaces;
 using StackOverflowTags.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,10 @@ builder.Services.AddLogging(config =>
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+var scope = app.Services.CreateScope();
+var initializer = scope.ServiceProvider.GetRequiredService<ITagTableInitializer>();
+await initializer.Initialize();
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>

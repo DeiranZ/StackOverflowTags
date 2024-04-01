@@ -12,7 +12,7 @@ namespace StackOverflowTags.Infrastructure.Extensions
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             var connString = configuration.GetConnectionString("TagsContext");
-            var serverVersion = ServerVersion.AutoDetect(connString);
+            var serverVersion = ServerVersion.Parse(configuration.GetConnectionString("ServerVersion"));
 
             services.AddDbContext<StackOverflowTagsDbContext>(
                 options =>
@@ -21,6 +21,7 @@ namespace StackOverflowTags.Infrastructure.Extensions
                 });
 
             services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ITagTableInitializer, TagTableInitializer.TagTableInitializer>();
         }
     }
 }
