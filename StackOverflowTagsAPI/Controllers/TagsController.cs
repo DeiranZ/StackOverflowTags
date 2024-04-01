@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StackOverflowTags.Application.Tag;
 using MediatR;
-using StackOverflowTags.Application.Tag.Queries.GetAllTags;
-using StackOverflowTags.Application.Tag.Queries.Commands.RefreshTags;
+using StackOverflowTags.Application.Tag.Commands.RefreshTags;
+using StackOverflowTags.Domain.Models;
+using StackOverflowTags.Application.Tag.Queries.GetTags;
 
 namespace StackOverflowTags.API.Controllers
 {
@@ -16,15 +17,27 @@ namespace StackOverflowTags.API.Controllers
             this.mediator = mediator;
         }
 
+        /// <summary>
+        /// Gets the list of Tags
+        /// </summary>
+        /// <returns>The list of Tags</returns>
         [HttpGet]
-        [Route("GetAll")]
-        public async Task<ActionResult<IEnumerable<TagDto>>> GetAll()
+        [Route("Get")]
+        public async Task<ActionResult<IEnumerable<TagDto>>> Get([FromQuery] TagParameters tagParameters)
         {
-            var result = await mediator.Send(new GetAllTagsQuery());
+            if (tagParameters.PageNumber < 1)
+            {
+                tagParameters.PageNumber = 1;
+            }
+
+            var result = await mediator.Send(new GetTagsQuery(tagParameters));
             if (result == null) { return BadRequest(); }
-            return CreatedAtAction(nameof(GetAll), result);
+            return CreatedAtAction(nameof(Get), result);
         }
 
+        /// <summary>
+        /// Refreshes the list of Tags by loading them again from StackOverflow
+        /// </summary>
         [HttpPost]
         [Route("RefreshData")]
         public async void RefreshData()

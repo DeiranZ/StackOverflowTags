@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace StackOverflowTags.Application.Tag.Queries.Commands.RefreshTags
+namespace StackOverflowTags.Application.Tag.Commands.RefreshTags
 {
     public class RefreshTagsCommand : IRequest
     {

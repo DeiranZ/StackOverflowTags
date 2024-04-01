@@ -9,7 +9,6 @@ namespace StackOverflowTags.Infrastructure.TagTableInitializer
         private readonly ITagRepository tagRepository;
         private HttpClientHandler handler;
 
-
         public TagTableInitializer(ITagRepository tagRepository) 
         {
             this.tagRepository = tagRepository;
@@ -18,6 +17,30 @@ namespace StackOverflowTags.Infrastructure.TagTableInitializer
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             };
+        }
+
+        public async Task Initialize()
+        {
+            var existingTags = tagRepository.GetAll();
+
+            if (existingTags.Count() > 0)
+            {
+                return;
+            }
+
+            await LoadTags();
+        }
+
+        public async Task Reinitialize()
+        {
+            var existingTags = tagRepository.GetAll();
+
+            if (existingTags.Count() > 0)
+            {
+                tagRepository.Clear();
+            }
+
+            await LoadTags();
         }
 
         private class ResponseObject()
@@ -31,15 +54,8 @@ namespace StackOverflowTags.Infrastructure.TagTableInitializer
             public string name = default!;
         }
 
-        public async Task Initialize()
+        public async Task LoadTags()
         {
-            var existingTags = tagRepository.GetAll();
-
-            if (existingTags.Count() > 0)
-            {
-                tagRepository.Clear();
-            }
-
             List<ResponseTag> allTags = new();
 
             for (int i = 1; i <= 10; i++)
@@ -73,7 +89,7 @@ namespace StackOverflowTags.Infrastructure.TagTableInitializer
                 Domain.Entities.Tag newTag = new();
                 newTag.Name = item.name;
                 newTag.Count = item.count;
-                newTag.Percentage = percentage;
+                newTag.Percentage = percentage * 100f;
 
                 tags.Add(newTag);
             }

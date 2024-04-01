@@ -2,6 +2,7 @@ using Microsoft.OpenApi.Models;
 using StackOverflowTags.Application.Extensions;
 using StackOverflowTags.Domain.Interfaces;
 using StackOverflowTags.Infrastructure.Extensions;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen( c=>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "StackOverflowTags API", Description = "Utilities for StackOverflow's Tags", Version = "v1" });
+
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 });
 builder.Services.AddLogging(config =>
     config
@@ -33,7 +38,6 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseHttpsRedirection();
-app.MapGet("/", () => "Hello World!");
 app.MapControllers();
 
 app.Run();

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using StackOverflowTags.Domain.Interfaces;
 
-namespace StackOverflowTags.Application.Tag.Queries.Commands.RefreshTags
+namespace StackOverflowTags.Application.Tag.Commands.RefreshTags
 {
     public class RefreshTagsCommandHandler : IRequestHandler<RefreshTagsCommand>
     {
@@ -14,7 +14,7 @@ namespace StackOverflowTags.Application.Tag.Queries.Commands.RefreshTags
 
         public async Task Handle(RefreshTagsCommand request, CancellationToken cancellationToken)
         {
-            await tagTableInitializer.Initialize();
+            await tagTableInitializer.Reinitialize();
         }
     }
 }
