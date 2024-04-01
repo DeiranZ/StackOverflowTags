@@ -2,8 +2,9 @@
 {
     public interface ITagRepository
     {
-        Task Create(Entities.Tag tag);
-        Task Create(IEnumerable<Entities.Tag> tags);
-        Task<IEnumerable<Entities.Tag>> GetAll();
+        void Create(Entities.Tag tag);
+        void Create(IEnumerable<Entities.Tag> tags);
+        IEnumerable<Entities.Tag> GetAll();
+        void Clear();
     }
 }

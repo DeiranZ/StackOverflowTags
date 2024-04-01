@@ -14,21 +14,26 @@ namespace StackOverflowTags.Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task Create(Tag tag)
+        public void Clear()
+        {
+            dbContext.Tags.ExecuteDelete();
+        }
+
+        public void Create(Tag tag)
         {
             dbContext.Add(tag);
-            await dbContext.SaveChangesAsync();
+            dbContext.SaveChanges();
         }
 
-        public async Task Create(IEnumerable<Tag> tags)
+        public void Create(IEnumerable<Tag> tags)
         {
             dbContext.AddRange(tags);
-            await dbContext.SaveChangesAsync();
+            dbContext.SaveChanges();
         }
 
-        public async Task<IEnumerable<Tag>> GetAll()
+        public IEnumerable<Tag> GetAll()
         {
-            return await dbContext.Tags.ToListAsync();
+            return dbContext.Tags.ToList();
         }
     }
 }

@@ -12,9 +12,13 @@ namespace StackOverflowTags.Infrastructure.Extensions
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             var connString = configuration.GetConnectionString("TagsContext");
+            var serverVersion = ServerVersion.AutoDetect(connString);
 
-            services.AddDbContext<StackOverflowTagsDbContext>(options =>
-                options.UseMySQL(connString));
+            services.AddDbContext<StackOverflowTagsDbContext>(
+                options =>
+                {
+                    options.UseMySql(connString, serverVersion).LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
+                });
 
             services.AddScoped<ITagRepository, TagRepository>();
         }
