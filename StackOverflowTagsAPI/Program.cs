@@ -4,6 +4,9 @@ using StackOverflowTags.Domain.Interfaces;
 using StackOverflowTags.Infrastructure.Extensions;
 using System.Reflection;
 using NLog;
+using Microsoft.AspNetCore.Diagnostics;
+using StackOverflowTags.Domain.Models;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,12 +22,12 @@ builder.Services.AddSwaggerGen( c=>
     c.IncludeXmlComments(xmlPath);
 });
 
-//builder.Services.AddLogging(config =>
-//    config
-//        .AddDebug()
-//        .AddConsole()
-//        .AddConfiguration(builder.Configuration)
-//        .SetMinimumLevel(LogLevel.Information));
+builder.Services.AddLogging(config =>
+    config
+        .AddDebug()
+        .AddConsole()
+        .AddConfiguration(builder.Configuration)
+        .SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information));
 
 LogManager.Setup();
 
@@ -44,5 +47,25 @@ app.UseSwaggerUI(c =>
 
 app.UseHttpsRedirection();
 app.MapControllers();
+
+var logger = scope.ServiceProvider.GetRequiredService<ILoggerManager>();
+app.UseExceptionHandler(appError =>
+{
+    appError.Run(async context =>
+    {
+        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        context.Response.ContentType = "application/json";
+        var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+        if (contextFeature != null)
+        {
+            logger.LogError($"Something went wrong: {contextFeature.Error}");
+            await context.Response.WriteAsync(new ErrorDetails()
+            {
+                StatusCode = context.Response.StatusCode,
+                Message = "Internal Server Error."
+            }.ToString());
+        }
+    });
+});
 
 app.Run();
