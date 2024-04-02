@@ -7,6 +7,7 @@ using NLog;
 using Microsoft.AspNetCore.Diagnostics;
 using StackOverflowTags.Domain.Models;
 using System.Net;
+using Microsoft.AspNetCore.Rewrite;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,4 +69,8 @@ app.UseExceptionHandler(appError =>
     });
 });
 
+app.UseRewriter(new RewriteOptions().AddRedirect("^$", "swagger"));
+
 app.Run();
+
+public partial class Program { }
