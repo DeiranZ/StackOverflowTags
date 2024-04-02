@@ -46,10 +46,7 @@ namespace StackOverflowTags.Infrastructure.Repositories
 
             ApplySort(ref tags, tagParameters.OrderBy);
 
-            return await tags
-                .Skip((tagParameters.PageNumber - 1) * tagParameters.PageSize)
-                .Take(tagParameters.PageSize)
-                .ToListAsync();
+            return await Task.Run(() => PagedList<Tag>.ToPagedList(tags, tagParameters.PageNumber, tagParameters.PageSize));
         }
 
         private void ApplySort(ref IQueryable<Tag> tags, string orderByQueryString)

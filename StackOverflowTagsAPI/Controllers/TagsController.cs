@@ -21,6 +21,8 @@ namespace StackOverflowTags.API.Controllers
         /// Gets the list of Tags
         /// </summary>
         /// <returns>The list of Tags</returns>
+        /// <response code="201">Returns the list of tags</response>
+        /// <response code="400">If the list is null</response>
         [HttpGet]
         [Route("Get")]
         public async Task<ActionResult<IEnumerable<TagDto>>> Get([FromQuery] TagParameters tagParameters)
