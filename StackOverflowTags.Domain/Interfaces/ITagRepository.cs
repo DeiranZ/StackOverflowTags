@@ -7,7 +7,7 @@ namespace StackOverflowTags.Domain.Interfaces
         Task Create(Entities.Tag tag);
         Task Create(IEnumerable<Entities.Tag> tags);
         Task<IEnumerable<Entities.Tag>> GetAll();
-        Task<IEnumerable<Entities.Tag>> Get(TagParameters tagParameters);
+        Task<PagedList<Entities.Tag>> Get(TagParameters tagParameters);
         Task Clear();
     }
 }

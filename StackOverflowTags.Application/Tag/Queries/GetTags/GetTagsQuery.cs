@@ -3,7 +3,7 @@ using StackOverflowTags.Domain.Models;
 
 namespace StackOverflowTags.Application.Tag.Queries.GetTags
 {
-    public class GetTagsQuery : IRequest<IEnumerable<TagDto>>
+    public class GetTagsQuery : IRequest<PagedList<TagDto>>
     {
         public GetTagsQuery(TagParameters parameters)
         {

@@ -4,6 +4,7 @@ using MediatR;
 using StackOverflowTags.Application.Tag.Commands.RefreshTags;
 using StackOverflowTags.Domain.Models;
 using StackOverflowTags.Application.Tag.Queries.GetTags;
+using Newtonsoft.Json;
 
 namespace StackOverflowTags.API.Controllers
 {
@@ -21,7 +22,7 @@ namespace StackOverflowTags.API.Controllers
         /// Gets the list of Tags
         /// </summary>
         /// <returns>The list of Tags</returns>
-        /// <response code="201">Returns the list of tags</response>
+        /// <response code="200">Returns the list of tags</response>
         /// <response code="400">If the list is null</response>
         [HttpGet]
         [Route("Get")]
@@ -34,6 +35,21 @@ namespace StackOverflowTags.API.Controllers
 
             var result = await mediator.Send(new GetTagsQuery(tagParameters));
             if (result == null) { return BadRequest(); }
+
+            var metadata = new
+            {
+                result.TotalCount,
+                result.PageSize,
+                result.CurrentPage,
+                result.TotalPages,
+                result.HasNext,
+                result.HasPrevious,
+            };
+
+            Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+            await Console.Out.WriteLineAsync($"Returned {result.TotalCount} tags from the database.");
+
             return CreatedAtAction(nameof(Get), result);
         }
 

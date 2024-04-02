@@ -21,6 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{89
 		Database\run-initialization.sh = Database\run-initialization.sh
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BBD2CED9-EC69-4111-B5B8-D23A6B517ECF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackOverflowTags.Domain.Tests", "StackOverflowTags.Domain.Tests\StackOverflowTags.Domain.Tests.csproj", "{647BD690-5C39-499D-83BC-9EFE905694D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,9 +51,16 @@ Global
 		{4CC30125-A085-4BF5-B8FC-332CFD16E43C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CC30125-A085-4BF5-B8FC-332CFD16E43C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CC30125-A085-4BF5-B8FC-332CFD16E43C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{647BD690-5C39-499D-83BC-9EFE905694D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{647BD690-5C39-499D-83BC-9EFE905694D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{647BD690-5C39-499D-83BC-9EFE905694D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{647BD690-5C39-499D-83BC-9EFE905694D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{647BD690-5C39-499D-83BC-9EFE905694D4} = {BBD2CED9-EC69-4111-B5B8-D23A6B517ECF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5EE83545-A2EF-4353-89FB-6D8CA772A228}

@@ -40,7 +40,7 @@ namespace StackOverflowTags.Infrastructure.Repositories
             return await dbContext.Tags.ToListAsync();
         }
 
-        public async Task<IEnumerable<Tag>> Get(TagParameters tagParameters)
+        public async Task<PagedList<Tag>> Get(TagParameters tagParameters)
         {
             var tags = dbContext.Tags.AsNoTracking();
 

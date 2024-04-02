@@ -1,16 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
-using StackOverflowTags.Application.Tag.Queries.GetAllTags;
 using StackOverflowTags.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StackOverflowTags.Domain.Models;
 
 namespace StackOverflowTags.Application.Tag.Queries.GetTags
 {
-    public class GetTagsQueryHandler : IRequestHandler<GetTagsQuery, IEnumerable<TagDto>>
+    public class GetTagsQueryHandler : IRequestHandler<GetTagsQuery, PagedList<TagDto>>
     {
         private readonly ITagRepository tagRepository;
         private readonly IMapper mapper;
@@ -21,10 +16,15 @@ namespace StackOverflowTags.Application.Tag.Queries.GetTags
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<TagDto>> Handle(GetTagsQuery request, CancellationToken cancellationToken)
+        public async Task<PagedList<TagDto>> Handle(GetTagsQuery request, CancellationToken cancellationToken)
         {
             var tags = await tagRepository.Get(request.TagParameters);
-            var dtos = mapper.Map<IEnumerable<TagDto>>(tags);
+            await Console.Out.WriteLineAsync("TotalCount: " + tags.TotalCount);
+            var dtos = mapper.Map<PagedList<TagDto>>(tags);
+            dtos.TotalCount = tags.TotalCount;
+            dtos.TotalPages = tags.TotalPages;
+            dtos.CurrentPage = tags.CurrentPage;
+            dtos.PageSize = tags.PageSize;
 
             return dtos;
         }

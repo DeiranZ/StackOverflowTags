@@ -5,16 +5,32 @@ volumes:
 
 services:
   database:
-    build: ./Database
+    image: mcr.microsoft.com/mssql/server:2022-CU12-ubuntu-22.04
+    ports:
+      - 1433:1433
+    restart: always
     environment:
       SA_PASSWORD: "Rootpas$"
       ACCEPT_EULA: "Y"
     healthcheck:
-      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "Rootpas$" -Q "SELECT 1" -b
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Rootpas$ -Q 'SELECT 1' || exit 1"]
       interval: 10s
-      timeout: 3s
-      retries: 10
+      retries: 50
       start_period: 10s
+      timeout: 3s
+
+  database.configurator:
+    image: mcr.microsoft.com/mssql/server:2022-CU12-ubuntu-22.04
+    volumes:
+      - ./SqlScripts:/docker-entrypoint-initdb.d
+    depends_on:
+      database:
+        condition: service_healthy
+    command: >
+      bash -c '
+      /opt/mssql-tools/bin/sqlcmd -S database -U sa -P Rootpas$ -d master -i docker-entrypoint-initdb.d/create-database.sql;
+      echo "Config Finished!!";
+      '
 
   stackoverflowtags.api:
     image: ${DOCKER_REGISTRY-}stackoverflowtagsapi
