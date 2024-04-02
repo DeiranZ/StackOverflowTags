@@ -18,38 +18,38 @@ namespace StackOverflowTags.Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
-        public void Clear()
+        public async Task Clear()
         {
-            dbContext.Tags.ExecuteDelete();
+            await dbContext.Tags.ExecuteDeleteAsync();
         }
 
-        public void Create(Tag tag)
+        public async Task Create(Tag tag)
         {
             dbContext.Add(tag);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
         }
 
-        public void Create(IEnumerable<Tag> tags)
+        public async Task Create(IEnumerable<Tag> tags)
         {
             dbContext.AddRange(tags);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
         }
 
-        public IEnumerable<Tag> GetAll()
+        public async Task<IEnumerable<Tag>> GetAll()
         {
-            return dbContext.Tags.ToList();
+            return await dbContext.Tags.ToListAsync();
         }
 
-        public IEnumerable<Tag> Get(TagParameters tagParameters)
+        public async Task<IEnumerable<Tag>> Get(TagParameters tagParameters)
         {
             var tags = dbContext.Tags.AsNoTracking();
 
             ApplySort(ref tags, tagParameters.OrderBy);
 
-            return tags
+            return await tags
                 .Skip((tagParameters.PageNumber - 1) * tagParameters.PageSize)
                 .Take(tagParameters.PageSize)
-                .ToList();
+                .ToListAsync();
         }
 
         private void ApplySort(ref IQueryable<Tag> tags, string orderByQueryString)

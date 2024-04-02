@@ -4,10 +4,10 @@ namespace StackOverflowTags.Domain.Interfaces
 {
     public interface ITagRepository
     {
-        void Create(Entities.Tag tag);
-        void Create(IEnumerable<Entities.Tag> tags);
-        IEnumerable<Entities.Tag> GetAll();
-        IEnumerable<Entities.Tag> Get(TagParameters tagParameters);
-        void Clear();
+        Task Create(Entities.Tag tag);
+        Task Create(IEnumerable<Entities.Tag> tags);
+        Task<IEnumerable<Entities.Tag>> GetAll();
+        Task<IEnumerable<Entities.Tag>> Get(TagParameters tagParameters);
+        Task Clear();
     }
 }

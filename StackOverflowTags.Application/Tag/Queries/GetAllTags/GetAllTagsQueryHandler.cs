@@ -17,7 +17,7 @@ namespace StackOverflowTags.Application.Tag.Queries.GetAllTags
 
         public async Task<IEnumerable<TagDto>> Handle(GetAllTagsQuery request, CancellationToken cancellationToken)
         {
-            var tags = await Task.Run(tagRepository.GetAll);
+            var tags = await tagRepository.GetAll();
             var dtos = mapper.Map<IEnumerable<TagDto>>(tags);
 
             return dtos;

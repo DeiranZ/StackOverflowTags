@@ -21,7 +21,7 @@ namespace StackOverflowTags.Infrastructure.TagTableInitializer
 
         public async Task Initialize()
         {
-            var existingTags = tagRepository.GetAll();
+            var existingTags = await tagRepository.GetAll();
 
             if (existingTags.Count() > 0)
             {
@@ -33,11 +33,11 @@ namespace StackOverflowTags.Infrastructure.TagTableInitializer
 
         public async Task Reinitialize()
         {
-            var existingTags = tagRepository.GetAll();
+            var existingTags = await tagRepository.GetAll();
 
             if (existingTags.Count() > 0)
             {
-                tagRepository.Clear();
+                await tagRepository.Clear();
             }
 
             await LoadTags();
@@ -94,7 +94,7 @@ namespace StackOverflowTags.Infrastructure.TagTableInitializer
                 tags.Add(newTag);
             }
 
-            tagRepository.Create(tags);
+            await tagRepository.Create(tags);
         }
     }
 }

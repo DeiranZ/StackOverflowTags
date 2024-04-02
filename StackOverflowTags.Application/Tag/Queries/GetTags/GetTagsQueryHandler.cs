@@ -23,7 +23,7 @@ namespace StackOverflowTags.Application.Tag.Queries.GetTags
 
         public async Task<IEnumerable<TagDto>> Handle(GetTagsQuery request, CancellationToken cancellationToken)
         {
-            var tags = await Task.Run(() => tagRepository.Get(request.TagParameters));
+            var tags = await tagRepository.Get(request.TagParameters);
             var dtos = mapper.Map<IEnumerable<TagDto>>(tags);
 
             return dtos;

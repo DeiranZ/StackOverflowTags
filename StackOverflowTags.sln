@@ -11,7 +11,15 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackOverflowTags.Infrastructure", "StackOverflowTags.Infrastructure\StackOverflowTags.Infrastructure.csproj", "{D3E50F62-EFDC-454C-9465-0E179A782AA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackOverflowTags.Application", "StackOverflowTags.Application\StackOverflowTags.Application.csproj", "{4CC30125-A085-4BF5-B8FC-332CFD16E43C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackOverflowTags.Application", "StackOverflowTags.Application\StackOverflowTags.Application.csproj", "{4CC30125-A085-4BF5-B8FC-332CFD16E43C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{89040E23-B18D-45B9-8A0F-E3FD93888ED4}"
+	ProjectSection(SolutionItems) = preProject
+		Database\Dockerfile = Database\Dockerfile
+		Database\create-database.sql = Database\create-database.sql
+		Database\entrypoint.sh = Database\entrypoint.sh
+		Database\run-initialization.sh = Database\run-initialization.sh
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

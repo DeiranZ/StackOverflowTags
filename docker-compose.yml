@@ -5,18 +5,16 @@ volumes:
 
 services:
   database:
-    image: mysql:8.0.36
-    ports:
-      - "3306:3306"
-    volumes:
-      - datafiles:/var/lib/mysql
-      - "./SqlScripts/setup.sql:/docker-entrypoint-initdb.d/1.sql"
-    restart: always
+    build: ./Database
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_USER: newuser
-      MYSQL_PASSWORD: newuser
-      MYSQL_DATABASE: StackOverflowTagsDb
+      SA_PASSWORD: "Rootpas$"
+      ACCEPT_EULA: "Y"
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "Rootpas$" -Q "SELECT 1" -b
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
 
   stackoverflowtags.api:
     image: ${DOCKER_REGISTRY-}stackoverflowtagsapi
@@ -29,5 +27,6 @@ services:
     environment:
     - DBHOST=database
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     restart: always
