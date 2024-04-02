@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackOverflowTags.Domain.Interfaces;
+using StackOverflowTags.Infrastructure.Loggers;
 using StackOverflowTags.Infrastructure.Persistence;
 using StackOverflowTags.Infrastructure.Repositories;
 
@@ -21,6 +22,8 @@ namespace StackOverflowTags.Infrastructure.Extensions
 
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ITagTableInitializer, TagTableInitializer.TagTableInitializer>();
+
+            services.AddSingleton<ILoggerManager, LoggerManager>();
         }
     }
 }

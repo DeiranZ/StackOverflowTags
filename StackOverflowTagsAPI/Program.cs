@@ -3,6 +3,7 @@ using StackOverflowTags.Application.Extensions;
 using StackOverflowTags.Domain.Interfaces;
 using StackOverflowTags.Infrastructure.Extensions;
 using System.Reflection;
+using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,12 +18,16 @@ builder.Services.AddSwaggerGen( c=>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
 });
-builder.Services.AddLogging(config =>
-    config
-        .AddDebug()
-        .AddConsole()
-        .AddConfiguration(builder.Configuration)
-        .SetMinimumLevel(LogLevel.Information));
+
+//builder.Services.AddLogging(config =>
+//    config
+//        .AddDebug()
+//        .AddConsole()
+//        .AddConfiguration(builder.Configuration)
+//        .SetMinimumLevel(LogLevel.Information));
+
+LogManager.Setup();
+
 builder.Services.AddControllers();
 
 var app = builder.Build();

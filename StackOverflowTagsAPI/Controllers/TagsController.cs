@@ -5,6 +5,7 @@ using StackOverflowTags.Application.Tag.Commands.RefreshTags;
 using StackOverflowTags.Domain.Models;
 using StackOverflowTags.Application.Tag.Queries.GetTags;
 using Newtonsoft.Json;
+using StackOverflowTags.Domain.Interfaces;
 
 namespace StackOverflowTags.API.Controllers
 {
@@ -12,10 +13,12 @@ namespace StackOverflowTags.API.Controllers
     public class TagsController : ControllerBase
     {
         private readonly IMediator mediator;
+        private readonly ILoggerManager logger;
 
-        public TagsController(IMediator mediator)
+        public TagsController(IMediator mediator, ILoggerManager logger)
         {
             this.mediator = mediator;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -48,7 +51,7 @@ namespace StackOverflowTags.API.Controllers
 
             Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-            await Console.Out.WriteLineAsync($"Returned {result.TotalCount} tags from the database.");
+            logger.LogInfo($"Returned {result.TotalCount} tags from the database.");
 
             return CreatedAtAction(nameof(Get), result);
         }
